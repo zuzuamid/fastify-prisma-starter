@@ -20,12 +20,12 @@ export default {
     email: process.env.EMAIL,
     app_pass: process.env.APP_PASS,
   },
- 
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+  },
   db: {},
 };
 
-// Commit 10
-
-// Commit 13
-
-// Commit 43
+// Commit 171
