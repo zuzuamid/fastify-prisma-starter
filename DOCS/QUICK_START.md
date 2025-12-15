@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get up and running with the Node.js Express PostgreSQL Prisma starter template in minutes.
+Get up and running with the Node.js Fastify PostgreSQL Prisma starter template in minutes.
 
 ## ⚡ 5-Minute Setup
 
@@ -106,20 +106,107 @@ curl -X GET http://localhost:5000/api/v1/user/me \
 3. **Learn about Modules**: Review [Module Documentation](./MODULES/)
 4. **Deploy**: Follow the [Deployment Guide](./DEPLOYMENT_GUIDE.md)
 
-## 🚀 Create Your First Module
+## 🚀 Module Scripts
+
+### Create a New Module
+
+The `create-module` script generates a complete module structure with all necessary files:
 
 ```bash
 # Create a new module
-npm run create-module product
+npm run create-module <module-name>
 
-# This creates a complete Product module with:
-# - Controller
-# - Service
-# - Routes
-# - Interface
-# - Validation
-# - Constants
+# Example:
+npm run create-module product
+npm run create-module order
+npm run create-module category
 ```
+
+**What it creates:**
+- `module.routes.ts` - Fastify plugin routes with authentication
+- `module.controller.ts` - Request handlers with FastifyRequest/FastifyReply
+- `module.service.ts` - Business logic with Prisma
+- `module.interface.ts` - TypeScript interfaces
+- `module.validation.ts` - Zod validation schemas
+- `module.constant.ts` - Module constants
+
+**Example:**
+```bash
+npm run create-module product
+```
+
+This creates:
+```
+src/app/modules/product/
+├── product.routes.ts      # Fastify routes
+├── product.controller.ts  # Controllers
+├── product.service.ts     # Services
+├── product.interface.ts  # Interfaces
+├── product.validation.ts # Validation schemas
+└── product.constant.ts   # Constants
+```
+
+**After creating a module:**
+1. Register routes in `src/app/routes/index.ts`:
+```typescript
+import { ProductRoutes } from "../modules/product/product.routes";
+
+const router = async (fastify: FastifyInstance) => {
+  // ... existing routes
+  fastify.register(ProductRoutes, { prefix: "/product" });
+};
+```
+
+2. Update Prisma schema if needed:
+```prisma
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+3. Run migrations:
+```bash
+npm run migrate
+```
+
+### Rename a Module
+
+The `rename-module` script renames an existing module and updates all references:
+
+```bash
+# Rename a module
+npm run rename-module <old-name> <new-name>
+
+# Example:
+npm run rename-module product item
+npm run rename-module order purchase
+```
+
+**What it does:**
+- Renames the module directory
+- Updates all file contents (lowercase and capitalized names)
+- Renames files if they contain the module name
+- Updates all references throughout the codebase
+
+**Example:**
+```bash
+npm run rename-module product item
+```
+
+This will:
+- Rename `src/app/modules/product/` → `src/app/modules/item/`
+- Update all `product` references to `item` in files
+- Update all `Product` references to `Item` in files
+- Rename files like `product.routes.ts` → `item.routes.ts`
+
+**Important Notes:**
+- Make sure the module exists before renaming
+- The new module name should not already exist
+- Update route registrations manually after renaming
+- Update Prisma schema manually if needed
 
 ## 🔧 Common Commands
 
@@ -133,8 +220,9 @@ npm run studio           # Open Prisma Studio
 npm run migrate          # Run database migrations
 npm run validate         # Validate Prisma schema
 
-# Module Creation
-npm run create-module <name>  # Create new module
+# Module Management
+npm run create-module <name>        # Create new module
+npm run rename-module <old> <new>   # Rename existing module
 ```
 
 ## 🆘 Need Help?

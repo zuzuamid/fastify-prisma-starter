@@ -1,6 +1,6 @@
 # Documentation Index
 
-Welcome to the comprehensive documentation for the Node.js Express PostgreSQL Prisma starter template. This index will help you navigate through all available documentation.
+Welcome to the comprehensive documentation for the Node.js Fastify PostgreSQL Prisma starter template. This index will help you navigate through all available documentation.
 
 ## 📚 Quick Navigation
 

@@ -1,16 +1,15 @@
-import { NextFunction, Request, Response } from "express";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { AnyZodObject } from "zod";
 
 const validateRequest =
   (schema: AnyZodObject) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (request: FastifyRequest, _reply: FastifyReply) => {
     try {
       await schema.parseAsync({
-        body: req.body,
+        body: request.body,
       });
-      return next();
     } catch (err) {
-      next(err);
+      throw err;
     }
   };
 

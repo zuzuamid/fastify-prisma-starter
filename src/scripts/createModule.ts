@@ -16,72 +16,120 @@ const createModule = (moduleName: string): void => {
 
   const files: Record<string, string> = {
     // 🚩 Routes file
-    [`${moduleBase}.routes.ts`]: `import express from "express";
-import { UserRole } from "@prisma/client";
+    [`${moduleBase}.routes.ts`]: `import { UserRole } from "@prisma/client";
+import { FastifyInstance } from "fastify";
+
 import auth from "../../middlewares/auth";
+import validateRequest from "../../middlewares/validateRequest";
 import { ${capName}Controllers } from "./${moduleBase}.controller";
+import { ${moduleBase}Validation } from "./${moduleBase}.validation";
 
-const router = express.Router();
+const ${capName}Routes = async (fastify: FastifyInstance) => {
+  fastify.post(
+    "/",
+    {
+      preHandler: [
+        auth(UserRole.ADMIN),
+        validateRequest(${moduleBase}Validation.create),
+      ],
+    },
+    ${capName}Controllers.create${capName}
+  );
 
-router.post("/", auth(UserRole.ADMIN), ${capName}Controllers.create${capName});
-router.get("/", auth(UserRole.ADMIN, UserRole.CUSTOMER), ${capName}Controllers.getAll${capName});
-router.get("/:id", auth(UserRole.ADMIN, UserRole.CUSTOMER), ${capName}Controllers.get${capName}ById);
-router.put("/:id", auth(UserRole.ADMIN), ${capName}Controllers.update${capName});
-router.delete("/:id", auth(UserRole.ADMIN), ${capName}Controllers.delete${capName});
+  fastify.get(
+    "/",
+    {
+      preHandler: auth(UserRole.ADMIN, UserRole.USER),
+    },
+    ${capName}Controllers.getAll${capName}
+  );
 
-export const ${capName}Routes = router;
+  fastify.get(
+    "/:id",
+    {
+      preHandler: auth(UserRole.ADMIN, UserRole.USER),
+    },
+    ${capName}Controllers.get${capName}ById
+  );
+
+  fastify.put(
+    "/:id",
+    {
+      preHandler: [
+        auth(UserRole.ADMIN),
+        validateRequest(${moduleBase}Validation.update),
+      ],
+    },
+    ${capName}Controllers.update${capName}
+  );
+
+  fastify.delete(
+    "/:id",
+    {
+      preHandler: auth(UserRole.ADMIN),
+    },
+    ${capName}Controllers.delete${capName}
+  );
+};
+
+export { ${capName}Routes };
 `,
 
     // 🚩 Controller file
-    [`${moduleBase}.controller.ts`]: `import httpStatus from "http-status";
+    [`${moduleBase}.controller.ts`]: `import { FastifyReply, FastifyRequest } from "fastify";
+import { StatusCodes } from "http-status-codes";
+
 import { catchAsync } from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { ${capName}Services } from "./${moduleBase}.service";
 
-const create${capName} = catchAsync(async (req, res) => {
-  const result = await ${capName}Services.create${capName}(req.body);
-  sendResponse(res, {
-    status: httpStatus.CREATED,
+const create${capName} = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const result = await ${capName}Services.create${capName}(request.body as any);
+  sendResponse(reply, {
+    statusCode: StatusCodes.CREATED,
     success: true,
     message: "${capName} created successfully!",
     data: result,
   });
 });
 
-const getAll${capName} = catchAsync(async (req, res) => {
+const getAll${capName} = catchAsync(async (_request: FastifyRequest, reply: FastifyReply) => {
   const result = await ${capName}Services.getAll${capName}();
-  sendResponse(res, {
-    status: httpStatus.OK,
+  sendResponse(reply, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "All ${capName}s retrieved successfully!",
     data: result,
   });
 });
 
-const get${capName}ById = catchAsync(async (req, res) => {
-  const result = await ${capName}Services.get${capName}ById(req.params.id);
-  sendResponse(res, {
-    status: httpStatus.OK,
+const get${capName}ById = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const id = Number((request.params as any).id);
+  const result = await ${capName}Services.get${capName}ById(id);
+  sendResponse(reply, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "${capName} retrieved successfully!",
     data: result,
   });
 });
 
-const update${capName} = catchAsync(async (req, res) => {
-  const result = await ${capName}Services.update${capName}(req.params.id, req.body);
-  sendResponse(res, {
-    status: httpStatus.OK,
+const update${capName} = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const id = Number((request.params as any).id);
+  const result = await ${capName}Services.update${capName}(id, request.body as any);
+  sendResponse(reply, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "${capName} updated successfully!",
     data: result,
   });
 });
 
-const delete${capName} = catchAsync(async (req, res) => {
-  const result = await ${capName}Services.delete${capName}(req.params.id);
-  sendResponse(res, {
-    status: httpStatus.OK,
+const delete${capName} = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const id = Number((request.params as any).id);
+  const result = await ${capName}Services.delete${capName}(id);
+  sendResponse(reply, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "${capName} deleted successfully!",
     data: result,
@@ -98,13 +146,13 @@ export const ${capName}Controllers = {
 `,
 
     // 🚩 Service file
-    [`${moduleBase}.service.ts`]: `import { PrismaClient } from "@prisma/client";
-import httpStatus from "http-status";
+    [`${moduleBase}.service.ts`]: `import httpStatus from "http-status";
+
 import ApiError from "../../errors/ApiError";
+import prisma from "../../utils/prisma";
+import { I${capName} } from "./${moduleBase}.interface";
 
-const prisma = new PrismaClient();
-
-const create${capName} = async (payload: any) => {
+const create${capName} = async (payload: I${capName}) => {
   return await prisma.${moduleBase}.create({ data: payload });
 };
 
@@ -114,13 +162,13 @@ const getAll${capName} = async () => {
   });
 };
 
-const get${capName}ById = async (id: string) => {
+const get${capName}ById = async (id: number) => {
   const result = await prisma.${moduleBase}.findUnique({ where: { id } });
   if (!result) throw new ApiError(httpStatus.NOT_FOUND, "${capName} not found");
   return result;
 };
 
-const update${capName} = async (id: string, payload: any) => {
+const update${capName} = async (id: number, payload: Partial<I${capName}>) => {
   const result = await prisma.${moduleBase}.update({
     where: { id },
     data: payload,
@@ -128,7 +176,7 @@ const update${capName} = async (id: string, payload: any) => {
   return result;
 };
 
-const delete${capName} = async (id: string) => {
+const delete${capName} = async (id: number) => {
   await prisma.${moduleBase}.delete({ where: { id } });
   return { message: "${capName} deleted successfully" };
 };
@@ -144,7 +192,7 @@ export const ${capName}Services = {
 
     // 🚩 Interface
     [`${moduleBase}.interface.ts`]: `export interface I${capName} {
-  id: string;
+  id?: number;
   name: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -156,10 +204,14 @@ export const ${capName}Services = {
 
 export const ${moduleBase}Validation = {
   create: z.object({
-    name: z.string().min(1, "Name is required"),
+    body: z.object({
+      name: z.string().min(1, "Name is required"),
+    }),
   }),
   update: z.object({
-    name: z.string().optional(),
+    body: z.object({
+      name: z.string().min(1, "Name is required").optional(),
+    }),
   }),
 };
 `,

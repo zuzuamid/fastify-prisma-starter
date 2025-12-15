@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Thank you for your interest in contributing to the Node.js Express PostgreSQL Prisma starter template! This guide will help you get started with contributing to the project.
+Thank you for your interest in contributing to the Node.js Fastify PostgreSQL Prisma starter template! This guide will help you get started with contributing to the project.
 
 ## 🤝 How to Contribute
 
@@ -234,27 +234,56 @@ describe('Feature Name', () => {
 
 ### 1. Using the Module Generator
 
+#### Create a New Module
+
 ```bash
 # Create a new module
 npm run create-module <module-name>
 
-# This creates:
-# - module.controller.ts
-# - module.service.ts
-# - module.routes.ts
-# - module.interface.ts
-# - module.validation.ts
-# - module.constant.ts
+# Examples:
+npm run create-module product
+npm run create-module order
+npm run create-module category
 ```
+
+**What it creates:**
+- `module.routes.ts` - Fastify plugin routes with authentication
+- `module.controller.ts` - Request handlers (FastifyRequest/FastifyReply)
+- `module.service.ts` - Business logic with Prisma
+- `module.interface.ts` - TypeScript interfaces
+- `module.validation.ts` - Zod validation schemas
+- `module.constant.ts` - Module constants
+
+#### Rename a Module
+
+```bash
+# Rename an existing module
+npm run rename-module <old-name> <new-name>
+
+# Examples:
+npm run rename-module product item
+npm run rename-module order purchase
+```
+
+**What it does:**
+- Renames the module directory
+- Updates all file contents (lowercase and capitalized names)
+- Renames files if they contain the module name
+- Updates all references throughout the codebase
+
+**Important:** After renaming, manually update:
+- Route registrations in `src/app/routes/index.ts`
+- Prisma schema if needed
+- Any other external references
 
 ### 2. Module Structure
 
 ```
 modules/YourModule/
+├── your-module.routes.ts        # Fastify plugin routes
 ├── your-module.controller.ts    # Request handling
 ├── your-module.service.ts       # Business logic
-├── your-module.routes.ts        # Route definitions
-├── your-module.interface.ts     # Type definitions
+├── your-module.interface.ts      # Type definitions
 ├── your-module.validation.ts    # Request validation
 └── your-module.constant.ts      # Module constants
 ```
@@ -263,16 +292,50 @@ modules/YourModule/
 
 ```typescript
 // Add to src/app/routes/index.ts
-import { YourModuleRoutes } from "../modules/YourModule/your-module.routes";
+import { FastifyInstance } from "fastify";
+import { YourModuleRoutes } from "../modules/your-module/your-module.routes";
 
-const moduleRoutes = [
+const router = async (fastify: FastifyInstance) => {
   // ... existing routes
-  {
-    path: "/your-module",
-    route: YourModuleRoutes,
-  },
-];
+  fastify.register(YourModuleRoutes, { prefix: "/your-module" });
+};
+
+export default router;
 ```
+
+### 4. Complete Module Setup Workflow
+
+1. **Create the module:**
+   ```bash
+   npm run create-module product
+   ```
+
+2. **Update Prisma schema** (`prisma/schema.prisma`):
+   ```prisma
+   model Product {
+     id        Int      @id @default(autoincrement())
+     name      String
+     price     Float?
+     createdAt DateTime @default(now())
+     updatedAt DateTime @updatedAt
+   }
+   ```
+
+3. **Run migrations:**
+   ```bash
+   npm run migrate
+   ```
+
+4. **Register routes** in `src/app/routes/index.ts`:
+   ```typescript
+   fastify.register(ProductRoutes, { prefix: "/product" });
+   ```
+
+5. **Customize the generated code** as needed:
+   - Update interfaces in `product.interface.ts`
+   - Add validation rules in `product.validation.ts`
+   - Implement business logic in `product.service.ts`
+   - Add custom routes in `product.routes.ts`
 
 ## 📋 Pull Request Guidelines
 

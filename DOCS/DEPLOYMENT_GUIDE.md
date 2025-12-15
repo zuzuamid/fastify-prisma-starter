@@ -1,6 +1,6 @@
 # Deployment Guide
 
-Complete guide for deploying the Node.js Express PostgreSQL Prisma starter template to various platforms.
+Complete guide for deploying the Node.js Fastify PostgreSQL Prisma starter template to various platforms.
 
 ## 🚀 Prerequisites
 

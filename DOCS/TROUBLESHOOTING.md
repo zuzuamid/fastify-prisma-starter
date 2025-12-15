@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-Common issues and solutions for the Node.js Express PostgreSQL Prisma starter template.
+Common issues and solutions for the Node.js Fastify PostgreSQL Prisma starter template.
 
 ## 🚨 Common Issues
 
@@ -228,7 +228,7 @@ Error: Cannot find module '@prisma/client'
 **Solutions**:
 1. **Install missing types**:
    ```bash
-   npm install @types/node @types/express @types/bcrypt
+   npm install @types/node @types/Fastify @types/bcrypt
    ```
 
 2. **Check tsconfig.json**:
@@ -407,7 +407,7 @@ docker-compose logs
 
 ### 3. Resources
 - [Prisma Documentation](https://www.prisma.io/docs)
-- [Express.js Documentation](https://expressjs.com/)
+- [Fastify Documentation](https://fastify.dev/)
 - [Node.js Documentation](https://nodejs.org/docs/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 

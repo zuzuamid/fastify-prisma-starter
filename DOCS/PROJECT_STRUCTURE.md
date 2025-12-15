@@ -1,11 +1,11 @@
 # Project Structure
 
-This document outlines the organized structure of the Node.js Express Prisma starter template following industry best practices.
+This document outlines the organized structure of the Node.js Fastify Prisma starter template following industry best practices.
 
 ## 📁 Root Directory
 
 ```
-nodejs-express-prisma-starter/
+nodejs-fastify-prisma-starter/
 ├── .github/                    # GitHub workflows and templates
 │   └── workflows/
 │       └── ci.yml             # CI/CD pipeline
@@ -56,7 +56,7 @@ src/
 │   ├── user.model.ts
 │   ├── media.model.ts
 │   └── index.ts
-├── middleware/               # Express middleware functions
+├── middleware/               # Fastify middleware functions
 │   ├── auth.middleware.ts
 │   ├── error.middleware.ts
 │   ├── validation.middleware.ts
@@ -107,7 +107,7 @@ src/
 │   ├── auth.test.ts
 │   ├── user.test.ts
 │   └── media.test.ts
-├── app.ts                    # Express application configuration
+├── app.ts                    # Fastify application configuration
 └── server.ts                 # Server entry point
 ```
 
@@ -149,7 +149,7 @@ src/
 - Example: `user.model.ts`, `media.model.ts`
 
 ### Middleware
-- `*.middleware.ts` - Express middleware
+- `*.middleware.ts` - Fastify middleware
 - Example: `auth.middleware.ts`, `error.middleware.ts`
 
 ### Routes

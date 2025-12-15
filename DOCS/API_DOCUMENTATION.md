@@ -1,6 +1,6 @@
 # API Documentation
 
-Complete API reference for the Node.js Express PostgreSQL Prisma starter template.
+Complete API reference for the Node.js Fastify PostgreSQL Prisma starter template.
 
 ## 🌐 Base URL
 

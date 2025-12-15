@@ -1,10 +1,10 @@
-# Node.js Express Prisma Starter Template
+# Node.js Fastify Prisma Starter Template
 
-A comprehensive, production-ready Node.js backend starter template built with Express.js, PostgreSQL, Prisma ORM, TypeScript, and modern development practices.
+A comprehensive, production-ready Node.js backend starter template built with Fastify, PostgreSQL, Prisma ORM, TypeScript, and modern development practices.
 
 ## 🚀 Features
 
-- **🔧 Modern Stack**: Node.js, Express.js, TypeScript, PostgreSQL, Prisma ORM
+- **🔧 Modern Stack**: Node.js, Fastify, TypeScript, PostgreSQL, Prisma ORM
 - **🔐 Authentication**: JWT-based authentication with refresh tokens
 - **👥 User Management**: Complete user CRUD with role-based access control
 - **📁 File Upload**: Cloudinary integration for media management
@@ -29,8 +29,8 @@ A comprehensive, production-ready Node.js backend starter template built with Ex
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd nodejs-express-prisma-starter
+git clone https://github.com/ibnabdullah1/nodejs-fastify-prisma-starter.git
+cd nodejs-fastify-prisma-starter
 ```
 
 ### 2. Install Dependencies
@@ -91,6 +91,10 @@ Your server will be running at `http://localhost:5000`
 - `npm run format` - Format code with Prettier
 - `npm run type-check` - Run TypeScript type checking
 
+### Module Scripts
+- `npm run create-module <name>` - Create a new module with complete structure
+- `npm run rename-module <old> <new>` - Rename an existing module and update all references
+
 ### Testing
 - `npm test` - Run tests
 - `npm run test:watch` - Run tests in watch mode
@@ -108,7 +112,7 @@ src/
 ├── controllers/         # Request handlers
 ├── services/           # Business logic
 ├── models/             # Data models
-├── middleware/         # Express middleware
+├── middleware/         # fastify middleware
 ├── utils/              # Utility functions
 ├── types/              # TypeScript type definitions
 ├── constants/          # Application constants
@@ -119,7 +123,7 @@ src/
 ├── scripts/            # Utility scripts
 ├── templates/          # Email templates
 ├── tests/              # Test files
-├── app.ts              # Express app configuration
+├── app.ts              # fastify app configuration
 └── server.ts           # Server entry point
 ```
 
@@ -141,6 +145,80 @@ The template includes the following models:
 
 - **User**: User authentication and profile management
 - **Media**: File upload and metadata storage
+
+## 🛠️ Module Generation
+
+This template includes powerful scripts to quickly generate and manage modules.
+
+### Create a New Module
+
+Generate a complete module structure with all necessary files:
+
+```bash
+npm run create-module <module-name>
+
+# Examples:
+npm run create-module product
+npm run create-module order
+npm run create-module category
+```
+
+**Generated Files:**
+- `module.routes.ts` - Fastify plugin routes with authentication
+- `module.controller.ts` - Request handlers (FastifyRequest/FastifyReply)
+- `module.service.ts` - Business logic with Prisma
+- `module.interface.ts` - TypeScript interfaces
+- `module.validation.ts` - Zod validation schemas
+- `module.constant.ts` - Module constants
+
+**After creating a module:**
+
+1. **Register routes** in `src/app/routes/index.ts`:
+```typescript
+import { ProductRoutes } from "../modules/product/product.routes";
+
+const router = async (fastify: FastifyInstance) => {
+  fastify.register(ProductRoutes, { prefix: "/product" });
+};
+```
+
+2. **Update Prisma schema** (`prisma/schema.prisma`):
+```prisma
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+3. **Run migrations**:
+```bash
+npm run migrate
+```
+
+### Rename a Module
+
+Rename an existing module and update all references:
+
+```bash
+npm run rename-module <old-name> <new-name>
+
+# Examples:
+npm run rename-module product item
+npm run rename-module order purchase
+```
+
+**What it does:**
+- Renames the module directory
+- Updates all file contents (lowercase and capitalized names)
+- Renames files if they contain the module name
+- Updates all references throughout the codebase
+
+**Important:** After renaming, manually update:
+- Route registrations in `src/app/routes/index.ts`
+- Prisma schema if needed
+- Any other external references
 
 ## 🚀 Deployment
 
@@ -232,7 +310,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- [Express.js](https://expressjs.com/) - Web framework
+- [Fastify](https://fastify.dev/) - Web framework
 - [Prisma](https://www.prisma.io/) - Database ORM
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [PostgreSQL](https://www.postgresql.org/) - Database
