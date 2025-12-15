@@ -1,23 +1,11 @@
-/* eslint-disable no-console */
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { FastifyReply, FastifyRequest } from "fastify";
 
-export const catchAsync = (fn: RequestHandler) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch((error): void => {
-      console.log(error);
-      next(error);
-    });
+export const catchAsync =
+  (fn: (request: FastifyRequest, reply: FastifyReply) => Promise<any>) =>
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      await fn(request, reply);
+    } catch (error) {
+      throw error;
+    }
   };
-};
-
-// Commit 25
-
-// Commit 70
-
-// Commit 113
-
-// Commit 154
-
-// Commit 165
-
-// Commit 185
