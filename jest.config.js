@@ -42,7 +42,3 @@ module.exports = {
     },
   },
 };
-
-// Commit 46
-
-// Commit 188
