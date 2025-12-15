@@ -1,20 +1,23 @@
+import { FastifyReply, FastifyRequest } from "fastify";
 import { StatusCodes } from "http-status-codes";
-import config from "../../config";
-import catchAsync from "../../utils/catchAsync";
+
+import config from "../../../config";
+import { catchAsync } from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+
 import { AuthService } from "./auth.service";
 
-const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthService.loginUser(req.body);
+const loginUser = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const { refreshToken, ...result } = await AuthService.loginUser(request.body as any);
 
-  res.cookie("refreshToken", refreshToken, {
-    secure: config.NODE_ENV === "production",
+  reply.setCookie("refreshToken", refreshToken, {
+    secure: config.env === "production",
     httpOnly: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 
-  sendResponse(res, {
+  sendResponse(reply, {
     statusCode: StatusCodes.OK,
     success: true,
     message: "User logged in successfully!",
@@ -22,13 +25,13 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
-const refreshToken = catchAsync(async (req, res) => {
-  const { authorization } = req.headers;
+const refreshToken = catchAsync(async (request: FastifyRequest, reply: FastifyReply) => {
+  const { authorization } = request.headers;
 
   const result = await AuthService.refreshToken(authorization as string);
 
-  sendResponse(res, {
-    statusCode: 200,
+  sendResponse(reply, {
+    statusCode: StatusCodes.OK,
     success: true,
     message: "User logged in successfully!",
     data: result,
@@ -36,13 +39,13 @@ const refreshToken = catchAsync(async (req, res) => {
 });
 
 // change password
-const changePassword = catchAsync(async (req, res) => {
-  const user = req.user;
-  const payload = req.body;
+const changePassword = catchAsync(async (request: FastifyRequest & { user?: any }, reply: FastifyReply) => {
+  const user = request.user;
+  const payload = request.body;
 
-  await AuthService.changePassword(user, payload);
+  await AuthService.changePassword(user, payload as any);
 
-  sendResponse(res, {
+  sendResponse(reply, {
     statusCode: StatusCodes.OK,
     success: true,
     message: "Password changed successfully!",
@@ -55,9 +58,3 @@ export const AuthController = {
   refreshToken,
   changePassword,
 };
-
-// Commit 81
-
-// Commit 123
-
-// Commit 189
