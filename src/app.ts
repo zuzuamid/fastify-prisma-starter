@@ -55,3 +55,5 @@ const app = async (fastify: FastifyInstance) => {
 };
 
 export default app;
+
+// Improvement commit 122
