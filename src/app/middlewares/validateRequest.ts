@@ -15,11 +15,3 @@ const validateRequest =
   };
 
 export default validateRequest;
-
-// Commit 5
-
-// Commit 64
-
-// Commit 66
-
-// Commit 74
