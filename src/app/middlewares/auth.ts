@@ -1,19 +1,18 @@
-import { NextFunction, Request, Response } from "express";
-
+import { FastifyReply, FastifyRequest } from "fastify";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
+
 import config from "../../config";
 import ApiError from "../errors/ApiError";
 import { jwtHelpers } from "../helpers/jwtHelpers";
 
 const auth = (...roles: string[]) => {
   return async (
-    req: Request & { user?: any },
-    res: Response,
-    next: NextFunction
+    request: FastifyRequest & { user?: any },
+    _reply: FastifyReply
   ) => {
     try {
-      const token = req.headers.authorization;
+      const token = request.headers.authorization;
 
       if (!token) {
         throw new ApiError(httpStatus.UNAUTHORIZED, "You are not authorized!");
@@ -23,21 +22,15 @@ const auth = (...roles: string[]) => {
         config.jwt.jwt_secret as Secret
       );
 
-      req.user = verifiedUser;
+      request.user = verifiedUser;
 
-      if (roles.length && !roles.includes(verifiedUser.role)) {
+      if (roles.length && !roles.includes(verifiedUser["role"])) {
         throw new ApiError(httpStatus.FORBIDDEN, "Forbidden!");
       }
-
-      next();
     } catch (err) {
-      next(err);
+      throw err;
     }
   };
 };
 
 export default auth;
-
-// Commit 91
-
-// Commit 143
