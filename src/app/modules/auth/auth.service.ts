@@ -1,117 +1,101 @@
 import bcrypt from "bcrypt";
-import { StatusCodes } from "http-status-codes";
+import httpStatus from "http-status";
 import { JwtPayload, Secret } from "jsonwebtoken";
-import mongoose from "mongoose";
-import config from "../../config";
-import AppError from "../../errors/appError";
-import User from "../user/user.model";
+
+import config from "../../../config";
+import ApiError from "../../errors/ApiError";
+import { jwtHelpers } from "../../helpers/jwtHelpers";
+import prisma from "../../utils/prisma";
+
 import { IAuth, IJwtPayload } from "./auth.interface";
-import { createToken, verifyToken } from "./auth.utils";
 
 const loginUser = async (payload: IAuth) => {
-  const session = await mongoose.startSession();
-
-  try {
-    session.startTransaction();
-
-    const user = await User.findOne({ email: payload.email }).session(session);
-    if (!user) {
-      throw new AppError(StatusCodes.NOT_FOUND, "This user is not found!");
-    }
-
-    if (!user.is_active) {
-      throw new AppError(StatusCodes.FORBIDDEN, "This user is not active!");
-    }
-
-    if (!(await User.isPasswordMatched(payload?.password, user?.password))) {
-      throw new AppError(StatusCodes.FORBIDDEN, "Password does not match");
-    }
-
-    const nowUTC = new Date();
-    const nowBDT = new Date(nowUTC.getTime() + 6 * 60 * 60 * 1000);
-    const jwtPayload: IJwtPayload = {
-      user_id: user._id as string,
-      name: user.name as string,
-      email: user.email as string,
-      is_active: user.is_active,
-      last_login: nowBDT,
-      profile_photo: user.profile_photo as string,
-      role: user.role,
-    };
-
-    const token = createToken(
-      jwtPayload,
-      config.jwt_access_secret as string,
-      config.jwt_access_expires_in as string
-    );
-
-    const refreshToken = createToken(
-      jwtPayload,
-      config.jwt_refresh_secret as string,
-      config.jwt_refresh_expires_in as string
-    );
-
-    const updateUserInfo = await User.findByIdAndUpdate(
-      user._id,
-      { clientInfo: payload.clientInfo, last_login: Date.now() },
-      { new: true, session }
-    );
-
-    await session.commitTransaction();
-
-    return {
-      token,
-      refreshToken,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        is_active: user.is_active,
-        role: user.role,
-        profile_photo: user.profile_photo,
-      },
-    };
-  } catch (error) {
-    await session.abortTransaction();
-    throw error;
-  } finally {
-    session.endSession();
+  const user = await prisma.user.findUnique({ where: { email: payload.email } });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "This user is not found!");
   }
+
+  if (!user.isActive) {
+    throw new ApiError(httpStatus.FORBIDDEN, "This user is not active!");
+  }
+
+  if (!(await bcrypt.compare(payload?.password, user?.password))) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Password does not match");
+  }
+
+  const nowUTC = new Date();
+  const nowBDT = new Date(nowUTC.getTime() + 6 * 60 * 60 * 1000);
+  const jwtPayload: IJwtPayload = {
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    isActive: user.isActive,
+    lastLogin: nowBDT,
+    role: user.role,
+  };
+
+  const token = jwtHelpers.generateToken(
+    jwtPayload,
+    config.jwt.jwt_secret as string,
+    config.jwt.expires_in as string
+  );
+
+  const refreshToken = jwtHelpers.generateToken(
+    jwtPayload,
+    config.jwt.refresh_token_secret as string,
+    config.jwt.refresh_token_expires_in as string
+  );
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { refreshToken },
+  });
+
+  return {
+    token,
+    refreshToken,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isActive: user.isActive,
+      role: user.role,
+    },
+  } as any; // Type assertion to avoid exactOptionalPropertyTypes issue
 };
 
 const refreshToken = async (token: string) => {
   let verifiedToken = null;
   try {
-    verifiedToken = verifyToken(token, config.jwt_refresh_secret as Secret);
+    verifiedToken = jwtHelpers.verifyToken(token, config.jwt.refresh_token_secret as Secret);
   } catch (err) {
-    throw new AppError(StatusCodes.FORBIDDEN, "Invalid Refresh Token");
+    throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
   }
 
-  const { user_id } = verifiedToken;
+  const { userId } = verifiedToken;
 
-  const isUserExist = await User.findById(user_id);
+  const isUserExist = await prisma.user.findUnique({ where: { id: userId } });
   if (!isUserExist) {
-    throw new AppError(StatusCodes.NOT_FOUND, "User does not exist");
+    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
   }
 
-  if (!isUserExist.is_active) {
-    throw new AppError(StatusCodes.BAD_REQUEST, "User is not active");
+  if (!isUserExist.isActive) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "User is not active");
   }
 
   const jwtPayload: IJwtPayload = {
-    user_id: isUserExist._id as string,
-    name: isUserExist.name as string,
-    email: isUserExist.email as string,
-    last_login: isUserExist.last_login,
-    is_active: isUserExist.is_active,
-    profile_photo: isUserExist.profile_photo,
+    userId: isUserExist.id,
+    name: isUserExist.name,
+    email: isUserExist.email,
+    lastLogin: isUserExist.createdAt, // Assuming createdAt can be used as lastLogin if not explicitly tracked
+    isActive: isUserExist.isActive,
     role: isUserExist.role,
   };
 
-  const newAccessToken = createToken(
+  const newAccessToken = jwtHelpers.generateToken(
     jwtPayload,
-    config.jwt_access_secret as Secret,
-    config.jwt_access_expires_in as string
+    config.jwt.jwt_secret as Secret,
+    config.jwt.expires_in as string
   );
 
   return {
@@ -123,32 +107,26 @@ const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string }
 ) => {
-  const { user_id } = userData;
+  const { userId } = userData;
   const { oldPassword, newPassword } = payload;
 
-  const user = await User.findOne({ _id: user_id });
+  const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) {
-    throw new AppError(StatusCodes.NOT_FOUND, "User not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-  if (!user.is_active) {
-    throw new AppError(StatusCodes.FORBIDDEN, "User account is inactive");
+  if (!user.isActive) {
+    throw new ApiError(httpStatus.FORBIDDEN, "User account is inactive");
   }
 
   // Validate old password
-  const isOldPasswordCorrect = await User.isPasswordMatched(
-    oldPassword,
-    user.password
-  );
+  const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
   if (!isOldPasswordCorrect) {
-    throw new AppError(StatusCodes.FORBIDDEN, "Incorrect old password");
+    throw new ApiError(httpStatus.FORBIDDEN, "Incorrect old password");
   }
 
   // Hash and update the new password
-  const hashedPassword = await bcrypt.hash(
-    newPassword,
-    Number(config.bcrypt_salt_rounds)
-  );
-  await User.updateOne({ _id: user_id }, { password: hashedPassword });
+  const hashedPassword = await bcrypt.hash(newPassword, 12); // Using 12 as salt rounds
+  await prisma.user.update({ where: { id: userId }, data: { password: hashedPassword } });
 
   return { message: "Password changed successfully" };
 };
@@ -158,5 +136,3 @@ export const AuthService = {
   refreshToken,
   changePassword,
 };
-
-// Commit 129
