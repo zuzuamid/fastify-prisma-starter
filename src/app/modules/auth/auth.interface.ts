@@ -22,3 +22,5 @@ export interface IJwtPayload {
   lastLogin: Date;
   profilePhoto?: string | undefined;
 }
+
+// Improvement commit 12
