@@ -63,3 +63,5 @@ const MediaRoutes = async (fastify: FastifyInstance) => {
 };
 
 export { MediaRoutes };
+
+// Improvement commit 67
