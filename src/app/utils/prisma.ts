@@ -23,11 +23,11 @@ const prisma = new PrismaClient({
 
 prisma.$on("query", (e) => {
   console.log("-------------------------------------------");
-  console.log("Query: " + e.query);
+  console.log(`Query: ${  e.query}`);
   console.log("-------------------------------------------");
-  console.log("Params: " + e.params);
+  console.log(`Params: ${  e.params}`);
   console.log("-------------------------------------------");
-  console.log("Duration: " + e.duration + "ms");
+  console.log(`Duration: ${  e.duration  }ms`);
   console.log("-------------------------------------------");
 });
 
@@ -44,17 +44,3 @@ prisma.$on("query", (e) => {
 // })
 
 export default prisma;
-
-// Commit 3
-
-// Commit 17
-
-// Commit 51
-
-// Commit 65
-
-// Commit 67
-
-// Commit 145
-
-// Commit 179
