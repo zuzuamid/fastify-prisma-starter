@@ -27,6 +27,7 @@ const app = async (fastify: FastifyInstance) => {
 
   // Root route
   fastify.get("/", async (_request: FastifyRequest, _reply: FastifyReply) => {
+    
     return {
       Message: "Altium Medicare server..",
     };
@@ -55,15 +56,3 @@ const app = async (fastify: FastifyInstance) => {
 };
 
 export default app;
-
-// Improvement commit 122
-
-// Improvement commit 172
-
-// Improvement commit 176
-
-// Improvement commit 185
-
-// Improvement commit 194
-
-// Improvement commit 230
