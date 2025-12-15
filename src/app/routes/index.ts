@@ -1,26 +1,13 @@
-import express from "express";
-import { AuthRoutes } from "../modules/Auth/auth.routes";
-import { userRoutes } from "../modules/User/user.routes";
+import { FastifyInstance } from "fastify";
 
-const router = express.Router();
+import { AuthRoutes } from "../modules/auth/auth.routes";
+import { MediaRoutes } from "../modules/media/media.routes";
+import { userRoutes } from "../modules/user/user.routes";
 
-const moduleRoutes = [
-  {
-    path: "/user",
-    route: userRoutes,
-  },
-  {
-    path: "/auth",
-    route: AuthRoutes,
-  },
-];
-
-moduleRoutes.forEach((route) => router.use(route.path, route.route));
+const router = async (fastify: FastifyInstance) => {
+  fastify.register(userRoutes, { prefix: "/user" });
+  fastify.register(AuthRoutes, { prefix: "/auth" });
+  fastify.register(MediaRoutes, { prefix: "/media" });
+};
 
 export default router;
-
-// Commit 103
-
-// Commit 105
-
-// Commit 127
