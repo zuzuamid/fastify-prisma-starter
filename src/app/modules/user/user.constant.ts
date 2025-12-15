@@ -6,15 +6,3 @@ export const userFilterableFields: string[] = [
   "status",
   "searchTerm",
 ];
-
-// Commit 14
-
-// Commit 56
-
-// Commit 115
-
-// Commit 159
-
-// Commit 169
-
-// Commit 178
