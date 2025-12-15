@@ -22,9 +22,3 @@ const createUser = z.object({
 export const userValidation = {
   createUser,
 };
-
-// Commit 9
-
-// Commit 62
-
-// Commit 90
